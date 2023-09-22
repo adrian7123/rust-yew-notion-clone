@@ -1,4 +1,0 @@
-[alias]
-dev = "trunk serve"
-asd = "watch -- trunk serve"
-"dev:bot" = "watch -- cargo run -p discord_bot"
