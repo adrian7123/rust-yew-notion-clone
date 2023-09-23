@@ -1,10 +1,12 @@
 use yew::prelude::*;
 
+use crate::components::editor::Editor;
+
 #[function_component(App)]
 pub fn app() -> Html {
     html! {
-        <main>
-            <p class="bg-red-100">{"Test!"}</p>
-        </main>
+        <div class="min-h-screen p-8 text-zinc-900 bg-gradient-to-r from-pink-300 via-purple-300 to-indigo-400">
+            <Editor/>
+        </div>
     }
 }
