@@ -1,9 +1,36 @@
+use gloo_console::log;
+use web_sys::EventTarget;
 use yew::prelude::*;
+
+use crate::components::bubble_menu::BubbleMenu;
 
 #[function_component]
 pub fn EditorContent() -> Html {
+    let top = use_state(|| 0);
+    let left = use_state(|| 0);
+
+    let on_content_change = Callback::from(|e: InputEvent| {
+        let target: EventTarget = e.target().unwrap();
+
+        log!(target);
+    });
+
+    let on_mouse_up = {
+        let top = top.clone();
+        let left = left.clone();
+        Callback::from(move |e: MouseEvent| {
+            top.set(e.client_y() - 55);
+            left.set(e.client_x() - 20);
+            log!(format!("x: {}; y: {}", e.client_x(), e.client_y()));
+        })
+    };
+
     html! {
+      <>
+        <BubbleMenu left={*left} top={*top}/>
         <div
+          onmouseup={on_mouse_up}
+          oninput={on_content_change}
           contenteditable="true"
           id="editor"
           class="w-full h-full p-2 outline-none overflow-x-auto"
@@ -35,5 +62,6 @@ pub fn EditorContent() -> Html {
                 <p>{"&copy; 2023 Your Blog Name. All rights reserved."}</p>
             </footer>
         </div>
+      </>
     }
 }
