@@ -13,8 +13,8 @@ pub fn Editor() -> Html {
 
     html! {
         <div
-            class="bg-white max-w-[1100px] mx-auto rounded-xl min-h-[500px] shadow-sm border border-black/20 overflow-hidden grid grid-cols-[16rem_1fr]">
-            <aside class="bg-zinc-50 border-r border-r-zinc-100 p-4">
+            class="bg-zing-900 max-w-[1100px] mx-auto rounded-xl min-h-[500px] shadow-sm border border-black/20 overflow-hidden grid grid-cols-[16rem_1fr]">
+            <aside class="bg-zinc-700 border-r border-r-zinc-700 p-4">
                 <div class="flex gap-2 group ">
                     <button onclick={click.clone()} class="w-3 h-3 rounded-full bg-zinc-300 group-hover:bg-red-400">
                     </button>

@@ -2,9 +2,9 @@
 port = 5000
 
 [[hooks]]
-stage = "post_build"
+stage = "build"
 command = "sh"
 command_arguments = [
   "-c",
-  "npx tailwindcss -i ./styles/main.css -o ./dist/.stage/index.css",
+  "tailwindcss -i ./styles/main.css -o ./dist/.stage/index.css",
 ]
