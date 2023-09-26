@@ -1,56 +1,69 @@
 use gloo_console::log;
-use wasm_bindgen::prelude::wasm_bindgen;
-use web_sys::EventTarget;
 use yew::prelude::*;
 
 use crate::components::bubble_menu::BubbleMenu;
-
-#[wasm_bindgen(module = "/src/js/index.js")]
-extern "C" {
-    fn getSelection() -> String;
-    fn isSelection() -> bool;
-}
+use crate::components::floating_menu::FloatingMenu;
+use crate::shared::js_commands;
 
 #[function_component]
 pub fn EditorContent() -> Html {
-    let top = use_state(|| 0.0);
-    let left = use_state(|| 0.0);
-    let visible = use_state(|| false);
-
-    let on_content_change = Callback::from(|e: InputEvent| {
-        let target: EventTarget = e.target().unwrap();
-
-        log!(target);
-    });
+    let bubble_top = use_state(|| 0.0);
+    let bubble_left = use_state(|| 0.0);
+    let bubble_visible = use_state(|| false);
+    let floating_top = use_state(|| 0.0);
+    let floating_left = use_state(|| 0.0);
+    let floating_visible = use_state(|| false);
 
     let on_mouse_up = {
-        let top = top.clone();
-        let left = left.clone();
-        let visible = visible.clone();
+        let bubble_top = bubble_top.clone();
+        let bubble_left = bubble_left.clone();
+        let bubble_visible = bubble_visible.clone();
         Callback::from(move |_| {
-            if isSelection() {
-                visible.set(true);
-                let arr: Vec<f32> = serde_json::from_str(&getSelection()).unwrap();
+            if js_commands::is_selection() {
+                bubble_visible.set(true);
+                let arr: Vec<f32> =
+                    serde_json::from_str(&js_commands::get_selection_position()).unwrap();
+
+                if let [x, y] = arr.as_slice() {
+                    bubble_top.set(y - 45.0);
+                    bubble_left.set(x - 22.0);
+                }
+            } else {
+                bubble_visible.set(false);
+            }
+        })
+    };
+
+    let on_key_down = {
+        let floating_top = floating_top.clone();
+        let floating_left = floating_left.clone();
+        let floating_visible = floating_visible.clone();
+
+        Callback::from(move |e: KeyboardEvent| {
+            if e.key() == "/" {
+                floating_visible.set(true);
+                let arr: Vec<f32> =
+                    serde_json::from_str(&js_commands::get_selection_position()).unwrap();
                 log!(format!("arr: {:?}", arr));
 
                 if let [x, y] = arr.as_slice() {
-                    top.set(y - 45.0);
-                    left.set(x - 22.0);
+                    floating_top.set(y - 45.0);
+                    floating_left.set(x - 22.0);
                 }
             } else {
-                visible.set(false);
+                floating_visible.set(false);
             }
-
-            log!(format!("x: {}; y: {}", *top, *left));
         })
     };
 
     html! {
       <>
-        <BubbleMenu left={*left} top={*top} visible={*visible} />
+        <FloatingMenu visible={*floating_visible} left={*floating_left} top={*floating_top}/>
+        <BubbleMenu visible={*bubble_visible} left={*bubble_left} top={*bubble_top} />
         <div
+            tabindex="1"
             onmouseup={on_mouse_up}
-            oninput={on_content_change}
+            onkeydown={on_key_down}
             contenteditable="true"
             id="editor"
             class="w-full h-full p-2 outline-none overflow-x-auto bg-zinc-700"

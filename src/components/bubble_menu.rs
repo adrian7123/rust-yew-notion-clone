@@ -1,5 +1,7 @@
 use yew::prelude::*;
 
+use super::bubble_menu_button::BubbleMenuButton;
+
 #[derive(Properties, PartialEq)]
 pub struct Props {
     pub top: f32,
@@ -17,13 +19,29 @@ pub fn BubbleMenu(props: &Props) -> Html {
           if props.visible {"flex"} else {"hidden"}
         ))}
         style={format!("top:{}px;left:{}px;",props.top,props.left)}>
-        <button class="p-2 text-zinc-300 text-sm flex items-center gap-1.5 font-medium leading-none">
-          <object class="w-5 h-5 text-black" data="/assets/icons/bold.svg"></object>
-        </button>
-        <button class="p-2 text-zinc-300 text-sm flex items-center gap-1.5 font-medium leading-none">{"Bold"}</button>
-        <button class="p-2 text-zinc-300 text-sm flex items-center gap-1.5 font-medium leading-none">{"Bold"}</button>
-        <button class="p-2 text-zinc-300 text-sm flex items-center gap-1.5 font-medium leading-none">{"Bold"}</button>
-        <button class="p-2 text-zinc-300 text-sm flex items-center gap-1.5 font-medium leading-none">{"Bold"}</button>
+
+        <BubbleMenuButton>
+          {"Text"}
+          <i class="fa-solid fa-chevron-down"></i>
+        </BubbleMenuButton>
+        <BubbleMenuButton>
+          <i class="fa-regular fa-comment"></i>
+          {"Comment"}
+        </BubbleMenuButton>
+        <div class="flex items-center" >
+          <BubbleMenuButton command="Bold">
+            <i class="w-4 h-4 fa-solid fa-bold"></i>
+          </BubbleMenuButton>
+          <BubbleMenuButton command="Italic">
+            <i class="w-4 h-4 fa-solid fa-italic"></i>
+          </BubbleMenuButton>
+          <BubbleMenuButton command="Bold">
+            <i class="w-4 h-4 fa-solid fa-strikethrough"></i>
+          </BubbleMenuButton>
+          <BubbleMenuButton command="Bold">
+            <i class="w-4 h-4 fa-solid fa-code"></i>
+          </BubbleMenuButton>
+        </div>
       </div>
     }
 }

@@ -1,5 +1,7 @@
 mod app;
 mod components;
+mod models;
+mod shared;
 
 use app::App;
 

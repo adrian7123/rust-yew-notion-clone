@@ -615,6 +615,7 @@ name = "rust-yew-notion-clone"
 version = "0.1.0"
 dependencies = [
  "gloo-console 0.3.0",
+ "js-sys",
  "serde_json",
  "wasm-bindgen",
  "wasm-logger",
